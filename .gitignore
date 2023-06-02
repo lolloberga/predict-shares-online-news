@@ -1,0 +1,6 @@
+venv/*
+/dataset/
+/.idea/
+
+*.csv
+
