@@ -7,6 +7,7 @@
 - Global_sentiment_polarity index for positive/neutral/negative sentiment of the text.
 - Title_subjectivity is a number between 0 and 1. 
 - Abs_title_subjectivity is a number between 0 and 0.5
+- Example: Dato un set di parole chiave: ["a", "Giuseppe", "piace", "la", "pizza"] ad ognuna di queste può essere associata un numero di condivisioni in tutti i documenti e un valore che indica quanto fitta bene nel data channel o comunque nel contesto del testo. Ora la misura di quanto bene fitta nel testo è usata per definire worst or best word, il numero di articoli in cui queste parole compaiono di nuovo come keyword negli altri articoli determinano il numero di condivisioni (in alternativa si potrebbe pensare al numero di volte la parola è segnata come keyword nei metadata o non so dove altro). 
 
 
 ### Features descriptions
@@ -24,4 +25,38 @@
 - average_token_length (numerical, ratio, continuous): It is the average length of a word in terms of characters. It is evaluated as: ${|length_of_all_words| \over n_tokens_content}$. It is equal to 0 when $n_tokens_content$ is 0. Its values is not expressed in a range between [0, 1] because it is a mean based on the length of the words (so based on the number of characters of each word). As a first consideration, this is a first statistics based on the lenght of the words and, once a strategy to manage the "0" values related on the $n_tokens_content$ is found, this feature could be meaningful to predict the number of shares because people prefer to read texts with short words so that they are easier to read. 
 - num_keywords (numerical, ordinal, discrete): The number of keywords in the metadata. This feature admits NaN values. The NaN values means that there is no keywords in the article's metadata (so it is possible to manage this NaN values by replace it with 0 integer value).
 - data_channel (categorical, discrete): The type of data channel. This feature has only 6 unique values which are the category in which an article belongs. There is no Null values and the data distribution is quite balance but the "Social Media" channel.
-- kw_min_min (numerical, ordinal, discrete): It is the number of the minimum times that a keyword has been used. It does not have NaN values but with high probability the value "-1" has been used for this scope. These NaN values could be managed by computing the average of this feature for each data channel and replace the NaN values with these (based on the assigned data channel).
+- kw_min_min (numerical, ordinal, discrete): It is the minimum number of time that the worst keyword (in terms of fitness in the context or in the text) has been used in other documents (sharing). It does not have NaN values but with high probability the value "-1" has been used for this scope. These NaN values could be managed by computing the average of this feature for each data channel and replace the NaN values with it (based on the assigned data channel). When ${n_tokens_content}$ is 0, the value of this feature is 0 or it could be an invalid one. See example above.
+- kw_max_min (numerical, ordinal, discrete): It is the maximum number of time that the worst keyword (in terms of fitness in the context or in the text) has been used in other documents (sharing). It does not have NaN values neither invalid values. It can be equal to 0 that means that the worst keyword has been used only in the current article. 
+- kw_avg_min (numerical, ordinal, discrete): It is the maximum number of time that the worst keyword (in terms of fitness in the context or in the text) has been used in other documents (sharing). It does not have NaN values neither invalid values but with high probability the value "-1" has been used for this scope. I don't know between what the average is computed, maybe it is the number of shares is the number of time the keyword occurs in EACH other article.
+- kw_min_max (numerical, ordinal, discrete)
+...
+- self_reference_min_shares (numerical, ordinal, discrete): Min. shares of referenced articles in Mashable. It does not contain any NaN value but most probably 0 values can be interpreted as NaN values.
+- self_reference_max_shares (numerical, ordinal, discrete): Max. shares of referenced articles in Mashable. It does not contain any NaN value but most probably 0 values can be interpreted as NaN values.
+- self_reference_avg_shares (numerical, ordinal, discrete): Avg. shares of referenced articles in Mashable. It does not contain any NaN value but most probably 0 values can be interpreted as NaN values.
+- LDA_00 (numerical, rateo, continuous): Closeness to LDA topic 0 (Lifestyle). It has no NaN values but some 0 values can be mapped to NaN values. Only one record has this feature equal to 0 so I would not consider 0 as a NaN value. The record under analysis (id = 38792) belongs to the data channel "world".
+- LDA_01 (numerical, rateo, continuous): Closeness to LDA topic 1 (Entertainment). It has no NaN values. Only one record has this feature equal to 0 so I would not consider 0 as a NaN value. The record under analysis (id = 38792) belongs to the data channel "world".
+- LDA_02 (numerical, rateo, continuous): Closeness to LDA topic 2 (Business). It has no NaN values. Only one record has this feature equal to 0 so I would not consider 0 as a NaN value. The record under analysis (id = 38792) belongs to the data channel "world".
+- LDA_03 (numerical, rateo, continuous): Closeness to LDA topic 3 (Social Media). It has no NaN values. Only one record has this feature equal to 0 so I would not consider 0 as a NaN value. The record under analysis (id = 38792) belongs to the data channel "world".
+- LDA_04 (numerical, rateo, continuous): Closeness to LDA topic 4 (World). It has no NaN values. Only one record has this feature equal to 0 so I would not consider 0 as a NaN value. Even though the record belongs to the topic 4 it shows a LDA_04 score = 0. Then, since the record is the only which has such an irregularity i would delete it.
+- global_subjectivity (numerical, rateo, continuous): an indicator of text subjectivity. Without considering 3 records which except this rule, when the ${n\_tokens\_content}$ equals 0, this feature assume value equal to 0. 
+- global_sentiment_polarity (numerical, rateo, continuous): an indicator of the text sentiment. The more positive the article, the higher is this value. The feature does not present any NaN value. 
+- global_rate_positive_words (numerical, rateo, continuous): The rate of words with positive sentiment in the content.It is computed as: ${#positive\_words \over n\_tokens\_content}$. It can assume as value 0. 
+- global_rate_negative_words (numerical, rateo, continuous):
+- rate_positive_words (numerical, rateo, continuous):
+- rate_negative_words (numerical, rateo, continuous):
+- avg_positive_polarity (numerical, rateo, continuous):
+- min_positive_polarity (numerical, rateo, continuous):
+- max_positive_polarity (numerical, rateo, continuous):
+- avg_negative_polarity (numerical, rateo, continuous):
+- min_negative_polarity (numerical, rateo, continuous):
+- max_negative_polarity (numerical, rateo, continuous):
+- title_subjectivity (numerical, rateo, continuous):
+- title_sentiment_polarity (numerical, rateo, continuous):
+- abs_title_subjectivity ():
+- abs_title_sentiment_polarity (): 
+- shares (numerical, ordinal, discrete): 
+
+
+
+
+
