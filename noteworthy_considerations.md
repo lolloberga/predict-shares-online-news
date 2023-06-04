@@ -12,7 +12,7 @@
 
 ### Features descriptions
 - URL: url of the article. It is not a useful feature for the predicting model because it is a sort of unique identifier of the article. In addition, the text of article can be retreived in order to use it in an words embedding but this implies the using of a pre-trained model. 
-- Timedelta (numerical, ordinal, continuous in days): The number of days between the article publication and the dataset acquisition. This feature could be an interesting popularity (virality) indicator i.e. if timedelta is low and the number of corresponding shares is high, this means that the article became popular (viral) in a few days; this artifact is not always true because an article can take more days to become popular (viral).
+- timedelta (numerical, ordinal, continuous in days): The number of days between the article publication and the dataset acquisition. This feature could be an interesting popularity (virality) indicator i.e. if timedelta is low and the number of corresponding shares is high, this means that the article became popular (viral) in a few days; this artifact is not always true because an article can take more days to become popular (viral).
 - n_tokens_title (numerical, nominal, discrete in words): The number of words in the article's title. An initial assumption could be that a shorter title has more impact on the interest of the medium individual. From a preliminary comparison between the original title and this feature, the number does not match; it can be supposed that a stop-word elimination has been done in order to obtain the final counting. Nevertheless, some other mismatch may lead to additional processing before the count (e.g. a title inside the title). 
 - n_tokens_content (numerical, nominal, discrete in words): The number of words in the article's content. It can be observed that there are some values equal to 0 words: this can be due to an error during the data collection step. A possible solution to overcome this error could be discretizing the articles based on this feature and then set the mean of the "low" bin as the final (filling) values of these articles. Another possible solution could be to get the HTML page content of these articles and set the actual number of words. An initial assumption could be the same as n_tokens_title. In addition, it is possible to observe that the number of words mismatch with respect to actual original content statistic. As for the previous feature, it can be supposed that a stop-word elimination step has been done before the count. 
 - n_unique_tokens (numerical, ratio, continuous): The rate of unique words in the content. It is evaluated as: ${|unique_words| \over n_tokens_content}$. It is equal to 0 when $n_tokens_content$ is 0. 
@@ -33,30 +33,84 @@
 - self_reference_min_shares (numerical, ordinal, discrete): Min. shares of referenced articles in Mashable. It does not contain any NaN value.
 - self_reference_max_shares (numerical, ordinal, discrete): Max. shares of referenced articles in Mashable. It does not contain any NaN value.
 - self_reference_avg_shares (numerical, ordinal, discrete): Avg. shares of referenced articles in Mashable. It does not contain any NaN value.
-- LDA_00 (numerical, rateo, continuous): Closeness to LDA topic 0 (Lifestyle). It has no NaN values but some 0 values can be mapped to NaN values. Only one record has this feature equal to 0 so I would not consider 0 as a NaN value. The record under analysis (id = 38792) belongs to the data channel "world".
-- LDA_01 (numerical, rateo, continuous): Closeness to LDA topic 1 (Entertainment). It has no NaN values. Only one record has this feature equal to 0 so I would not consider 0 as a NaN value. The record under analysis (id = 38792) belongs to the data channel "world".
-- LDA_02 (numerical, rateo, continuous): Closeness to LDA topic 2 (Business). It has no NaN values. Only one record has this feature equal to 0 so I would not consider 0 as a NaN value. The record under analysis (id = 38792) belongs to the data channel "world".
-- LDA_03 (numerical, rateo, continuous): Closeness to LDA topic 3 (Social Media). It has no NaN values. Only one record has this feature equal to 0 so I would not consider 0 as a NaN value. The record under analysis (id = 38792) belongs to the data channel "world".
-- LDA_04 (numerical, rateo, continuous): Closeness to LDA topic 4 (Tech). It has no NaN values. Only one record has this feature equal to 0 so I would not consider 0 as a NaN value. Even though the record belongs to the topic 4 it shows a LDA_04 score = 0. 
-- global_subjectivity (numerical, rateo, continuous): an indicator of text subjectivity. Without considering 3 records which except this rule, when the ${n\_tokens\_content}$ equals 0, this feature assume value equal to 0. 
-- global_sentiment_polarity (numerical, rateo, continuous): an indicator of the text sentiment. The more positive the article, the higher is this value. The feature does not present any NaN value. 
-- global_rate_positive_words (numerical, rateo, continuous): The rate of words with positive sentiment in the content.It is computed as: ${#positive\_words \over n\_tokens\_content}$. Zero values are admissible. 
-- global_rate_negative_words (numerical, rateo, continuous): The rate of words with negative sentiment in the content.It is computed as: ${#negative\_words \over n\_tokens\_content}$. Zero values are admissible. 
-- rate_positive_words (numerical, rateo, continuous): The rate of words with positive sentiment between the words where the sentiment class is different from "neutral". It is computed as: ${#positive\_words \over (#positive\_words + #negative\_words)}$. Zero values are admissile and of course, they highly depend on the global_rate_positive_words variable in the sense that when global_rate_positive_words is zero, then also this feature is zero.
-- rate_negative_words (numerical, rateo, continuous): The rate of words with negative sentiment between the words where the sentiment class is different from "neutral". It is computed as: ${#negative\_words \over (#positive\_words + #negative\_words)}$. Zero values are admissile and of course, they highly depend on the global_rate_negative_words variable in the sense that when global_rate_negative_words is zero, then also this feature is zero.
-- avg_positive_polarity (numerical, rateo, continuous): Average polarity of positive words. It is computed as ${sum(polarity_of_positive_words) \over #positive\_words}$. It admits 0 values, when they occour, the feature global_rate_positive_words, min_positive_polarity and max_positive_polarity are reasonably always 0. It goes from 0 to 1.
-- min_positive_polarity (numerical, rateo, continuous): Minimum polarity of positive words. It admits 0 values, when they occour, the feature global_rate_positive_words, avg_positive_polarity and rate_positive_words are reasonably always 0. It goes from 0 to 1.
-- max_positive_polarity (numerical, rateo, continuous): Maximum polarity of positive words. It admits 0 values, when they occour, the feature global_rate_positive_words, avg_positive_polarity and rate_positive_words are reasonably always 0. It goes from 0 to 1.
-- avg_negative_polarity (numerical, rateo, continuous): Average polarity of positive words. It is computed as ${sum(polarity_of_positive_words) \over #positive\_words }$. It admits 0 values, when they occour, the feature global_rate_positive_words, min_positive_polarity and max_positive_polarity are reasonably always 0. It goes from -1 to 0.
-- min_negative_polarity (numerical, rateo, continuous): Minimum polarity of negative words. It admits 0 values, when they occour, the feature global_rate_negative_words, avg_negative_polarity and rate_negative_words are reasonably always 0. It goes from -1 to 0.
-- max_negative_polarity (numerical, rateo, continuous): Maximum polarity of negative words. It admits 0 values, when they occour, the feature global_rate_negative_words, avg_negative_polarity and rate_negative_words are reasonably always 0. It goes from -1 to 0.
-- title_subjectivity (numerical, rateo, continuous): an indicator of title subjectivity. It has not NaN values. It ranges from 0 to 1. It may not contain outliers.
-- title_sentiment_polarity (numerical, rateo, continuous): The title polarity. It ranges from -1 to 1: from -1 to 0, there is a negative polarity otherwise, the polarity of the title is positive. It does not contain NaN values.
-- abs_title_subjectivity (numerical, rateo, continuous)
-- abs_title_sentiment_polarity (numerical, rateo, continuous): The absolute polarity level. This is the absolute value of the title sentiment polarity feature. It indicates the magnitude level of the title's polarity, whatever is the sign of the sentiment.
+- weekday (categorical, discrete): The day of the week the article was published. This feature has only 7 unique values which are the days of the week in which an article was published. There is no Null values and the data distribution is quite balance but the weekend days (Saturday and Sunday).
+- LDA_00 (numerical, ratio, continuous): Closeness to LDA topic 0 (Lifestyle). It has no NaN values but some 0 values can be mapped to NaN values. Only one record has this feature equal to 0 so I would not consider 0 as a NaN value. The record under analysis (id = 38792) belongs to the data channel "world".
+- LDA_01 (numerical, ratio, continuous): Closeness to LDA topic 1 (Entertainment). It has no NaN values. Only one record has this feature equal to 0, so I would not consider 0 as a NaN value. The record under analysis (id = 38792) belongs to the data channel "world".
+- LDA_02 (numerical, ratio, continuous): Closeness to LDA topic 2 (Business). It has no NaN values. Only one record has this feature equal to 0, so I would not consider 0 as a NaN value. The record under analysis (id = 38792) belongs to the data channel "world".
+- LDA_03 (numerical, ratio, continuous): Closeness to LDA topic 3 (Social Media). It has no NaN values. Only one record has this feature equal to 0, so I would not consider 0 as a NaN value. The record under analysis (id = 38792) belongs to the data channel "world".
+- LDA_04 (numerical, ratio, continuous): Closeness to LDA topic 4 (Tech). It has no NaN values. Only one record has this feature equal to 0, so I would not consider 0 as a NaN value. Even though the record belongs to the topic 4 it shows a LDA_04 score = 0. 
+- global_subjectivity (numerical, ratio, continuous): an indicator of text subjectivity. Without considering 3 records which except this rule, when the ${n\_tokens\_content}$ equals 0, this feature assume value equal to 0. 
+- global_sentiment_polarity (numerical, ratio, continuous): an indicator of the text sentiment. The more positive the article, the higher is this value. The feature does not present any NaN value. 
+- global_rate_positive_words (numerical, ratio, continuous): The rate of words with positive sentiment in the content.It is computed as: ${#positive\_words \over n\_tokens\_content}$. Zero values are admissible. 
+- global_rate_negative_words (numerical, ratio, continuous): The rate of words with negative sentiment in the content.It is computed as: ${#negative\_words \over n\_tokens\_content}$. Zero values are admissible. 
+- rate_positive_words (numerical, ratio, continuous): The rate of words with positive sentiment between the words where the sentiment class is different from "neutral". It is computed as: ${#positive\_words \over (#positive\_words + #negative\_words)}$. Zero values are admissile and of course, they highly depend on the global_rate_positive_words variable in the sense that when global_rate_positive_words is zero, then also this feature is zero.
+- rate_negative_words (numerical, ratio, continuous): The rate of words with negative sentiment between the words where the sentiment class is different from "neutral". It is computed as: ${#negative\_words \over (#positive\_words + #negative\_words)}$. Zero values are admissile and of course, they highly depend on the global_rate_negative_words variable in the sense that when global_rate_negative_words is zero, then also this feature is zero.
+- avg_positive_polarity (numerical, ratio, continuous): Average polarity of positive words. It is computed as ${sum(polarity_of_positive_words) \over #positive\_words}$. It admits 0 values, when they occour, the feature global_rate_positive_words, min_positive_polarity and max_positive_polarity are reasonably always 0. It goes from 0 to 1. It is a statistical measure which describes the average level of positive polarity associated to the article's content.
+- min_positive_polarity (numerical, ratio, continuous): Minimum polarity of positive words. It admits 0 values, when they occour, the feature global_rate_positive_words, avg_positive_polarity and rate_positive_words are reasonably always 0. It goes from 0 to 1. It is a statistical measure which describes the minimum level of positive polarity associated to the article's content.
+- max_positive_polarity (numerical, ratio, continuous): Maximum polarity of positive words. It admits 0 values, when they occour, the feature global_rate_positive_words, avg_positive_polarity and rate_positive_words are reasonably always 0. It goes from 0 to 1. It is a statistical measure which describes the maximum level of positive polarity associated to the article's content.
+- avg_negative_polarity (numerical, ratio, continuous): Average polarity of positive words. It is computed as ${sum(polarity_of_positive_words) \over #positive\_words }$. It admits 0 values, when they occour, the feature global_rate_positive_words, min_positive_polarity and max_positive_polarity are reasonably always 0. It goes from -1 to 0. It is a statistical measure which describes the average level of negative polarity associated to the article's content.
+- min_negative_polarity (numerical, ratio, continuous): Minimum polarity of negative words. It admits 0 values, when they occour, the feature global_rate_negative_words, avg_negative_polarity and rate_negative_words are reasonably always 0. It goes from -1 to 0. It is a statistical measure which describes the minimum level of negative polarity associated to the article's content.
+- max_negative_polarity (numerical, ratio, continuous): Maximum polarity of negative words. It admits 0 values, when they occour, the feature global_rate_negative_words, avg_negative_polarity and rate_negative_words are reasonably always 0. It goes from -1 to 0. It is a statistical measure which describes the maximum level of negative polarity associated to the article's content.
+- title_subjectivity (numerical, ratio, continuous): an indicator of title subjectivity. It has not NaN values. It ranges from 0 to 1. It may not contain outliers.
+- title_sentiment_polarity (numerical, ratio, continuous): The title polarity. It ranges from -1 to 1: from -1 to 0, there is a negative polarity otherwise, the polarity of the title is positive. It does not contain NaN values.
+- abs_title_subjectivity (numerical, ratio, continuous): The absolute subjectivity level of the title.
+- abs_title_sentiment_polarity (numerical, ratio, continuous): The absolute polarity level. This is the absolute value of the title sentiment polarity feature. It indicates the magnitude level of the title's polarity, whatever is the sign of the sentiment.
 - shares (numerical, ordinal, discrete): TARGET VARIABLE. Number of shares. There are no NaN values. Some articles can be considered as outliers with respect to other articles given their number of shares. 
 
-
-
+### Features categorization
+- **Temporal features**
+  - timedelta
+  - weekday
+- **Sentiment features**
+  - global_subjectivity
+  - global_sentiment_polarity
+  - global_rate_positive_words
+  - global_rate_negative_words
+  - rate_positive_words
+  - rate_negative_words
+  - avg_positive_polarity
+  - min_positive_polarity
+  - max_positive_polarity
+  - avg_negative_polarity
+  - min_negative_polarity
+  - max_negative_polarity
+  - title_subjectivity
+  - abs_title_subjectivity
+  - title_sentiment_polarity
+  - abs_title_sentiment_polarity
+- **Media features**
+  - num_imgs
+  - num_videos
+- **Metadata features**
+  - num_keywords
+  - kw_min_min
+  - kw_max_min
+  - kw_avg_min
+  - kw_min_max
+  - kw_max_max
+  - kw_avg_min
+  - kw_min_avg
+  - kw_max_avg
+  - kw_avg_avg
+- **Linkage features**
+  - num_hrefs
+  - num_self_hrefs
+  - self_reference_min_shares
+  - self_reference_max_shares
+  - self_reference_avg_shares
+- **Article's statistics features**
+  - n_tokens_title
+  - n_tokens_content
+  - n_unique_tokens
+  - n_non_stop_words
+  - n_non_stop_unique_tokens
+  - average_token_length
+- **Topics features**
+  - data_channel
+  - LDA_00
+  - LDA_01
+  - LDA_02
+  - LDA_03
+  - LDA_04
 
 
