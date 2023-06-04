@@ -40,15 +40,15 @@
 - LDA_04 (numerical, rateo, continuous): Closeness to LDA topic 4 (World). It has no NaN values. Only one record has this feature equal to 0 so I would not consider 0 as a NaN value. Even though the record belongs to the topic 4 it shows a LDA_04 score = 0. Then, since the record is the only which has such an irregularity i would delete it.
 - global_subjectivity (numerical, rateo, continuous): an indicator of text subjectivity. Without considering 3 records which except this rule, when the ${n\_tokens\_content}$ equals 0, this feature assume value equal to 0. 
 - global_sentiment_polarity (numerical, rateo, continuous): an indicator of the text sentiment. The more positive the article, the higher is this value. The feature does not present any NaN value. 
-- global_rate_positive_words (numerical, rateo, continuous): The rate of words with positive sentiment in the content.It is computed as: ${#positive\_words \over n\_tokens\_content}$. It can assume as value 0. 
-- global_rate_negative_words (numerical, rateo, continuous):
-- rate_positive_words (numerical, rateo, continuous):
-- rate_negative_words (numerical, rateo, continuous):
-- avg_positive_polarity (numerical, rateo, continuous):
-- min_positive_polarity (numerical, rateo, continuous):
-- max_positive_polarity (numerical, rateo, continuous):
-- avg_negative_polarity (numerical, rateo, continuous):
-- min_negative_polarity (numerical, rateo, continuous):
+- global_rate_positive_words (numerical, rateo, continuous): The rate of words with positive sentiment in the content.It is computed as: ${#positive\_words \over n\_tokens\_content}$. Zero values are admissile. 
+- global_rate_negative_words (numerical, rateo, continuous): The rate of words with negative sentiment in the content.It is computed as: ${#negative\_words \over n\_tokens\_content}$. Zero values are admissile. 
+- rate_positive_words (numerical, rateo, continuous): The rate of words with positive sentiment between the words where the sentiment class is different "neutral". It is computed as: ${#positive\_words \over (#positive\_words + #negative\_words)}$. Zero values are admissile and of course, they highly depend on the global_rate_positive_words variable.
+- rate_negative_words (numerical, rateo, continuous): The rate of words with negative sentiment between the words where the sentiment class is different "neutral". It is computed as: ${#negative\_words \over (#positive\_words + #negative\_words)}$. Zero values are admissile and of course, they highly depend on the global_rate_negative_words variable.
+- avg_positive_polarity (numerical, rateo, continuous): Average polarity of positive words. It is computed as ${sum(polarity_of_positive_words) \over #positive\_words }$. It admits 0 values, when they occour, the feature global_rate_positive_words, min_positive_polarity and max_positive_polarity are reasonably always 0. It goes from 0 to 1.
+- min_positive_polarity (numerical, rateo, continuous): Minimum polarity of positive words. It admits 0 values, when they occour, the feature global_rate_positive_words, avg_positive_polarity and rate_positive_words are reasonably always 0. It goes from 0 to 1.
+- max_positive_polarity (numerical, rateo, continuous): Maximum polarity of positive words. It admits 0 values, when they occour, the feature global_rate_positive_words, avg_positive_polarity and rate_positive_words are reasonably always 0. It goes from 0 to 1.
+- avg_negative_polarity (numerical, rateo, continuous): Average polarity of positive words. It is computed as ${sum(polarity_of_positive_words) \over #positive\_words }$. It admits 0 values, when they occour, the feature global_rate_positive_words, min_positive_polarity and max_positive_polarity are reasonably always 0. It goes from 0 to 1.
+- min_negative_polarity (numerical, rateo, continuous): Minimum polarity of negative words. It admits 0 values, when they occour, the feature global_rate_negative_words, avg_negative_polarity and rate_negative_words are reasonably always 0. It goes from 0 to 1.
 - max_negative_polarity (numerical, rateo, continuous):
 - title_subjectivity (numerical, rateo, continuous):
 - title_sentiment_polarity (numerical, rateo, continuous):
