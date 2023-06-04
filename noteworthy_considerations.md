@@ -114,4 +114,54 @@
   - LDA_03
   - LDA_04
 
+### Noticeable univariate analysis results
+- **Target feature**
+  - Shares: There are some outliers in the target feature which can be balance by rescaling the values to a logarithmic scale.
+- **Temporal features**
+  - Most of the articles were collected within 100 days after the publishment
+  - The data distribution of weekday feature is quite balance but the weekend days (Saturday and Sunday).
+- **Sentiment features**
+  - All the "global_*" features are centered to 0 and are distributed like a Normal random variable
+  - It is not easy to understand if it preferable to use the "rate_*_words" or the "global_rate_*_words" features... For this reason we choose to make a correlation analysis with the target feature
+  - "min_positive_polarity" and "max_negative_polarity" have quite a similar distribution 
+  - Some features are distributed in a range between [0, 1], other in [-1, 0] and the "title_sentiment_polarity" between [-1, +1]. It could be interesting to have these features in the same data range
+  - The "abs_title_sentiment_polarity" is useful to indicates the magnitude level of the title's polarity but it deletes the sign of the polarity
+  - There are some feature dependencies such as:
+  - "rate_positive_words" and "rate_negative_words" depends on the corresponding "global" features
+- **Media features**
+  - There are around 7925 NaN values and a lot of values below 2.
+  - There are outliers in both the features (see the box-plot)
+  - The Logarithmic transformation of the features improve the data stability and tends to distribute data like a Normal random variable, but the "num_video" feature continuous to stay unstable and with a lot of outliers
+- **Metadata features**
+  - We've to discover how importance have all these features to predict the target variable
+- **Linkage features**
+  - The majority of the data are distributed around the zero value: this is because, when the "n_tokens_content" feature is zero this feature is equal to. The same reasoning hold for the "num_self_href"
+  - The min and the max self_reference shares are distribute quite in the same way; this means that this range of shares between min and max is meaning the same thing from a statistical point of view. We can assume that the average feature is a good trade-off between the two.
+- **Article's statistics features**
+  - There are a lot of zero values in the "n_tokens_content" feature. This also imply that a lot of values are considered as outliers from the data distribution box-plot
+  - The "n_unique_tokens", "n_non_stop_words" and "n_non_stop_unique_tokens" are features which depend on the "n_tokens_content": when the latter is 0, the others are 0
+- **Topics features**
+  - The distribution of the data channels seems quite balance but social media which has the lowest percentage.
+  - LDA_* have all similar distributions and seems not to be so explicative features. Nevertheless, most of the imbalance is due to the presence of zero values which with some statistical calculations can be mapped to the feature which is not assigned to any LDA_* feature. 
+  - Without considering the 0 values, the distribution of LDA_* is quite uniform.
 
+### Noticeable multivariate analysis results
+
+#### Linear correlation with log-rescaled target feature
+- **Temporal features**
+  - Saturday and sunday have a weak linear positive correlation with the target variable
+- **Sentiment features**
+  - The features show a weak linear correlation with the target variable. 
+- **Media features**
+  - The features show a weak linear correlation with the target variable. 
+- **Metadata features**
+  - The feature "kw_avg_avg" shows a relatively high linear correlation with the target variable. 
+  - For what concernes the other variables, the pearson correlation looks like it is on the average of above-analyzed features
+- **Linkage features**
+  - For all the features, the pearson correlation looks like it is on the average of above-analyzed features
+- **Article's statistics features**
+  - For all the features, the pearson correlation looks like it is on the average of above-analyzed features
+- **Topics features**
+  - Data_channel_lifestyle seems to have a relatively high positive linear correlation with the target value.
+  - Data_channel_world and LDA_02 seems to have a relatively high negative linear correlation with the target value.
+  - For all other features, the pearson correlation looks like it is on the average of above-analyzed features.
