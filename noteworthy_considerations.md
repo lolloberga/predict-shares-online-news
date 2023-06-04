@@ -28,12 +28,12 @@
 - data_channel (categorical, discrete): The type of data channel. This feature has only 6 unique values which are the category in which an article belongs. There is no Null values and the data distribution is quite balance but the "Social Media" channel.
 - kw_min_min (numerical, ordinal, discrete): It is the minimum number of time that the worst keyword (in terms of fitness in the context or in the text) has been used in other documents (sharing). It does not have NaN values but with high probability the value "-1" has been used for this scope. These NaN values could be managed by computing the average of this feature for each data channel and replace the NaN values with it (based on the assigned data channel). When ${n_tokens_content}$ is 0, the value of this feature is 0 or it could be an invalid one. See example above.
 - kw_max_min (numerical, ordinal, discrete): It is the maximum number of time that the worst keyword (in terms of fitness in the context or in the text) has been used in other documents (sharing). It does not have NaN values neither invalid values. It can be equal to 0 that means that the worst keyword has been used only in the current article. 
-- kw_avg_min (numerical, ordinal, discrete): It is the maximum number of time that the worst keyword (in terms of fitness in the context or in the text) has been used in other documents (sharing). It does not have NaN values neither invalid values but with high probability the value "-1" has been used for this scope. I don't know between what the average is computed, maybe it is the number of shares is the number of time the keyword occurs in EACH other article.
+- kw_avg_min (numerical, ordinal, discrete): It is the average number of time that the worst keyword (in terms of fitness in the context or in the text) has been used in other documents (sharing). It does not have NaN values neither invalid values but with high probability the value "-1" has been used for this scope. I don't know between what the average is computed, maybe it is the number of shares is the number of time the keyword occurs in EACH other article.
 - kw_min_max (numerical, ordinal, discrete)
 ...
-- self_reference_min_shares (numerical, ordinal, discrete): Min. shares of referenced articles in Mashable. It does not contain any NaN value.
-- self_reference_max_shares (numerical, ordinal, discrete): Max. shares of referenced articles in Mashable. It does not contain any NaN value.
-- self_reference_avg_shares (numerical, ordinal, discrete): Avg. shares of referenced articles in Mashable. It does not contain any NaN value.
+- self_reference_min_shares (numerical, ordinal, discrete): Min. shares of referenced articles in Mashable. It does not contain any NaN value. Each article references other Mashable's articles and this feature is the minimum number of times these articles were shared.
+- self_reference_max_shares (numerical, ordinal, discrete): Max. shares of referenced articles in Mashable. It does not contain any NaN value. Each article references other Mashable's articles and this feature is the maximum number of times these articles were shared.
+- self_reference_avg_shares (numerical, ordinal, discrete): Avg. shares of referenced articles in Mashable. It does not contain any NaN value. Each article references other Mashable's articles and this feature is the average number of times these articles were shared.
 - weekday (categorical, discrete): The day of the week the article was published. This feature has only 7 unique values which are the days of the week in which an article was published. There is no Null values and the data distribution is quite balance but the weekend days (Saturday and Sunday).
 - LDA_00 (numerical, ratio, continuous): Closeness to LDA topic 0 (Lifestyle). It has no NaN values but some 0 values can be mapped to NaN values. Only one record has this feature equal to 0 so I would not consider 0 as a NaN value. The record under analysis (id = 38792) belongs to the data channel "world".
 - LDA_01 (numerical, ratio, continuous): Closeness to LDA topic 1 (Entertainment). It has no NaN values. Only one record has this feature equal to 0, so I would not consider 0 as a NaN value. The record under analysis (id = 38792) belongs to the data channel "world".
@@ -44,8 +44,8 @@
 - global_sentiment_polarity (numerical, ratio, continuous): an indicator of the text sentiment. The more positive the article, the higher is this value. The feature does not present any NaN value. 
 - global_rate_positive_words (numerical, ratio, continuous): The rate of words with positive sentiment in the content.It is computed as: ${#positive\_words \over n\_tokens\_content}$. Zero values are admissible. 
 - global_rate_negative_words (numerical, ratio, continuous): The rate of words with negative sentiment in the content.It is computed as: ${#negative\_words \over n\_tokens\_content}$. Zero values are admissible. 
-- rate_positive_words (numerical, ratio, continuous): The rate of words with positive sentiment between the words where the sentiment class is different from "neutral". It is computed as: ${#positive\_words \over (#positive\_words + #negative\_words)}$. Zero values are admissile and of course, they highly depend on the global_rate_positive_words variable in the sense that when global_rate_positive_words is zero, then also this feature is zero.
-- rate_negative_words (numerical, ratio, continuous): The rate of words with negative sentiment between the words where the sentiment class is different from "neutral". It is computed as: ${#negative\_words \over (#positive\_words + #negative\_words)}$. Zero values are admissile and of course, they highly depend on the global_rate_negative_words variable in the sense that when global_rate_negative_words is zero, then also this feature is zero.
+- rate_positive_words (numerical, ratio, continuous): The rate of words with positive sentiment between the words where the sentiment class is different from "neutral". It is computed as: ${#positive\_words \over (#positive\_words + #negative\_words)}$. Zero values are admissible and of course, they highly depend on the global_rate_positive_words variable in the sense that when global_rate_positive_words is zero, then also this feature is zero.
+- rate_negative_words (numerical, ratio, continuous): The rate of words with negative sentiment between the words where the sentiment class is different from "neutral". It is computed as: ${#negative\_words \over (#positive\_words + #negative\_words)}$. Zero values are admissible and of course, they highly depend on the global_rate_negative_words variable in the sense that when global_rate_negative_words is zero, then also this feature is zero.
 - avg_positive_polarity (numerical, ratio, continuous): Average polarity of positive words. It is computed as ${sum(polarity_of_positive_words) \over #positive\_words}$. It admits 0 values, when they occour, the feature global_rate_positive_words, min_positive_polarity and max_positive_polarity are reasonably always 0. It goes from 0 to 1. It is a statistical measure which describes the average level of positive polarity associated to the article's content.
 - min_positive_polarity (numerical, ratio, continuous): Minimum polarity of positive words. It admits 0 values, when they occour, the feature global_rate_positive_words, avg_positive_polarity and rate_positive_words are reasonably always 0. It goes from 0 to 1. It is a statistical measure which describes the minimum level of positive polarity associated to the article's content.
 - max_positive_polarity (numerical, ratio, continuous): Maximum polarity of positive words. It admits 0 values, when they occour, the feature global_rate_positive_words, avg_positive_polarity and rate_positive_words are reasonably always 0. It goes from 0 to 1. It is a statistical measure which describes the maximum level of positive polarity associated to the article's content.
@@ -89,7 +89,7 @@
   - kw_avg_min
   - kw_min_max
   - kw_max_max
-  - kw_avg_min
+  - kw_avg_max
   - kw_min_avg
   - kw_max_avg
   - kw_avg_avg
@@ -98,7 +98,7 @@
   - num_self_hrefs
   - self_reference_min_shares
   - self_reference_max_shares
-  - self_reference_avg_shares
+  - self_reference_avg_sharess
 - **Article's statistics features**
   - n_tokens_title
   - n_tokens_content
