@@ -7,7 +7,8 @@
 - Global_sentiment_polarity index for positive/neutral/negative sentiment of the text.
 - Title_subjectivity is a number between 0 and 1. 
 - Abs_title_subjectivity is a number between 0 and 0.5
-- Example: Dato un set di parole chiave: ["a", "Giuseppe", "piace", "la", "pizza"] ad ognuna di queste può essere associata un numero di condivisioni in tutti i documenti e un valore che indica quanto fitta bene nel data channel o comunque nel contesto del testo. Ora la misura di quanto bene fitta nel testo è usata per definire worst or best word, il numero di articoli in cui queste parole compaiono di nuovo come keyword negli altri articoli determinano il numero di condivisioni (in alternativa si potrebbe pensare al numero di volte la parola è segnata come keyword nei metadata o non so dove altro). 
+- Example: Dato un set di parole chiave: ["a", "Giuseppe", "piace", "la", "pizza"] ad ognuna di queste può essere associata un numero di condivisioni in tutti i documenti e un valore che indica quanto fitta bene nel data channel o comunque nel contesto del testo. Ora la misura di quanto bene fitta nel testo è usata per definire worst or best word, il numero di articoli in cui queste parole compaiono di nuovo come keyword negli altri articoli determinano il numero di condivisioni (in alternativa si potrebbe pensare al numero di volte la parola è segnata come keyword nei metadata o non so dove altro).
+- It could be an interesting idea to train a model that is able to predict the log of the shares (because it is distributed similar to a Gaussian distribution).
 
 
 ### Features descriptions
