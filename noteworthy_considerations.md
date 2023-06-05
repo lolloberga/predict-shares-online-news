@@ -155,13 +155,14 @@
 - **Media features**
   - The features show a weak linear correlation with the target variable. 
 - **Metadata features**
-  - The feature "kw_avg_avg" shows a relatively high linear correlation with the target variable. 
+  - The feature "kw_avg_avg", "kw_min_avg" and "kw_max_avg" shows a relatively high linear correlation with the target variable. 
   - For what concernes the other variables, the pearson correlation looks like it is on the average of above-analyzed features
 - **Linkage features**
   - For all the features, the pearson correlation looks like it is on the average of above-analyzed features
+  - The feature “num_hrefs” shows a relatively high linear correlation with the target variable.
 - **Article's statistics features**
   - For all the features, the pearson correlation looks like it is on the average of above-analyzed features
 - **Topics features**
   - Data_channel_lifestyle seems to have a relatively high positive linear correlation with the target value.
-  - Data_channel_world and LDA_02 seems to have a relatively high negative linear correlation with the target value.
+  - Data_channel_world, LDA_02 and LDA_03 seems to have a relatively high negative linear correlation with the target value.
   - For all other features, the pearson correlation looks like it is on the average of above-analyzed features.
