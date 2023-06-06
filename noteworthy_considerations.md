@@ -135,8 +135,8 @@
 - **Metadata features**
   - We've to discover how importance have all these features to predict the target variable
 - **Linkage features**
-  - The majority of the data are distributed around the zero value: this is because, when the "n_tokens_content" feature is zero this feature is equal to. The same reasoning hold for the "num_self_href"
-  - The min and the max self_reference shares are distribute quite in the same way; this means that this range of shares between min and max is meaning the same thing from a statistical point of view. We can assume that the average feature is a good trade-off between the two.
+  - The majority of the data are distributed around the zero value: this is because, when the "n_tokens_content" feature is zero this feature is equal to zero. The same reasoning hold for the "num_self_href"
+  - The min and the max self_reference shares are distribute quite in the same way; this means that this range of shares between min and max is meaning the same thing from a statistical point of view. We can assume that the average of the feature is a good trade-off between the two.
 - **Article's statistics features**
   - There are a lot of zero values in the "n_tokens_content" feature. This also imply that a lot of values are considered as outliers from the data distribution box-plot
   - The "n_unique_tokens", "n_non_stop_words" and "n_non_stop_unique_tokens" are features which depend on the "n_tokens_content": when the latter is 0, the others are 0
