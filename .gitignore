@@ -2,6 +2,7 @@ venv/*
 /dataset/
 /.idea/
 /backup/
+/output/
 
 *.csv
 
