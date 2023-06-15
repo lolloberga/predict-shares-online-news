@@ -9,7 +9,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.model_selection import GridSearchCV
 
 from xgboost import XGBRegressor
-from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.ensemble import GradientBoostingRegressor, RandomForestRegressor
 
 from sklearn.metrics import mean_squared_error, make_scorer
 from sklearn.metrics import r2_score
@@ -154,6 +154,9 @@ def final_preprocessing_dev(df):
     
     # features_for_scale[:] = scaled_features[:]
     # features_for_scale['shares'] = working_df_dev['shares']
+    # std_scaler = StandardScaler().fit(working_df_dev[['shares']])
+    # scaled_features = std_scaler.transform(working_df_dev[['shares']])
+    # working_df_dev[['shares']] = scaled_features
 
     return working_df_dev, dev_stats
 
@@ -222,7 +225,7 @@ def corrX_new(df, cut = 0.9):
 working_df_dev, dev_stats = final_preprocessing_dev(df_dev)
 df_working_df_eval = final_preprocessing_eval(df_eval, dev_stats)
 
-drop_new = corrX_new(working_df_dev, cut = 0.7)
+drop_new = corrX_new(working_df_dev, cut = 0.65)
 working_df_dev.drop(drop_new, axis=1, inplace=True)
 df_working_df_eval.drop(drop_new, axis=1, inplace=True)
 
@@ -236,12 +239,16 @@ y = working_df_dev["shares"].values
 X_train, X_valid, y_train, y_valid = train_test_split(X, y, shuffle=True, random_state=42)
 
 df_feature_train = pd.DataFrame(X_train)
-y_train = pd.DataFrame(y_train)
+# y_train = pd.DataFrame(y_train)
 
-trans = RFECV(estimator=XGBRegressor(), step=1, cv=4 ,verbose=2 ,n_jobs=-1, scoring='r2')
+trans = RFECV(estimator=RandomForestRegressor(), step=1, cv=4 ,n_jobs=-1, verbose=2, scoring='neg_root_mean_squared_error')
 trans.fit(df_feature_train, y_train)
 X_trans_train = trans.transform(df_feature_train)
-
+# print(f'trans.feature_names_in_: {trans.feature_names_in_}')
+# print(len(trans.feature_names_in_))
+# these are the indices of the columns that are considered important
+print(f'initial shape: {df_feature_train.shape}')
+print(f'new number of features: {trans.n_features_}')
 
 # xgbr = XGBRegressor(**best_params)
 grad_b = GradientBoostingRegressor(**best_params)
